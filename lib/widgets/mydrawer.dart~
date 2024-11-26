@@ -15,10 +15,9 @@ class MyDrawer extends StatelessWidget {
         // تغيير خلفية الـ Drawer بناءً على وضع الـ Theme
         return Drawer(
           backgroundColor: themeProvider.isDarkMode
-              ? kbuttonColor
-              : kprimaryColor,
+              ? kbuttonColor // الوضع الداكن: الخلفية تكون kprimaryColor
+              : kprimaryColor, // الوضع الفاتح: الخلفية بيضاء
           child: Container(
-            color: themeProvider.isDarkMode ? kbuttonColor : kprimaryColor,
             child: ListView(
               padding: EdgeInsets.zero,
               children: [

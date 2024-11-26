@@ -13,10 +13,6 @@ class AppThemes {
       titleTextStyle: TextStyle(color: kbuttonColor, fontSize: 20),
       iconTheme: IconThemeData(color: kbuttonColor),
     ),
-    drawerTheme: DrawerThemeData(
-      backgroundColor: kprimaryColor,
-      scrimColor: Colors.black.withOpacity(0.5), // Optional, darkening behind drawer
-    ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: kprimaryColor,
@@ -38,10 +34,6 @@ class AppThemes {
       elevation: 0,
       titleTextStyle: TextStyle(color: kprimaryColor, fontSize: 20),
       iconTheme: IconThemeData(color: kprimaryColor),
-    ),
-    drawerTheme: DrawerThemeData(
-      backgroundColor: kbuttonColor,
-      scrimColor: Colors.black.withOpacity(0.5), // Optional, darkening behind drawer
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,

@@ -2,14 +2,19 @@ import 'package:agecalculator/splash/splash.dart';
 import 'package:agecalculator/theme/theme_provider.dart';
 import 'package:agecalculator/utils/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 void main() {
-  runApp(const AgeCalculator());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((_) {
+    runApp(const AgeCalculator());
+  });
 }
-
 class AgeCalculator extends StatelessWidget {
   const AgeCalculator({super.key});
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'images/logo.png', // أضف صورة الشعار داخل مجلد assets
+                'assets/images/logo.png', // أضف صورة الشعار داخل مجلد assets
                 height: 100,
                 width: 100,
                 fit: BoxFit.contain,
