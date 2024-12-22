@@ -1,22 +1,22 @@
 import 'package:agecalculator/theme/theme_provider.dart';
+import 'package:agecalculator/widgets/custom_logout_dialog.dart';
+import 'package:agecalculator/widgets/customdialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:provider/provider.dart'; // تأكد من استيراد Provider
-import 'package:agecalculator/utils/const.dart'; // تأكد من استيراد الألوان المطلوبة
+import 'package:provider/provider.dart';
+import 'package:agecalculator/utils/const.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // استخدام Consumer للوصول إلى الـ ThemeProvider
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
-        // تغيير خلفية الـ Drawer بناءً على وضع الـ Theme
         return Drawer(
-          backgroundColor: themeProvider.isDarkMode
-              ? kbuttonColor
-              : kprimaryColor,
+          backgroundColor:
+              themeProvider.isDarkMode ? kbuttonColor : kprimaryColor,
           child: Container(
             color: themeProvider.isDarkMode ? kbuttonColor : kprimaryColor,
             child: ListView(
@@ -31,9 +31,10 @@ class MyDrawer extends StatelessWidget {
                       title: 'احسب عمرك',
                       onTap: () {
                         Navigator.pop(context);
-                        // Navigate to age calculator screen
                       },
+                      themeProvider: themeProvider,
                     ),
+                    _buildCustomDivider(themeProvider),
                     _buildDrawerItem(
                       icon: Icons.share_outlined,
                       title: 'مشاركة التطبيق',
@@ -41,33 +42,60 @@ class MyDrawer extends StatelessWidget {
                         Share.share('شارك تطبيق حساب العمر مع أصدقائك!');
                         Navigator.pop(context);
                       },
+                      themeProvider: themeProvider,
                     ),
                   ],
                 ),
-                 Divider(color: themeProvider.isDarkMode ? kprimaryColor
-                    : kbuttonColor, height: 1),
+                _buildCustomDivider(themeProvider),
                 _buildDrawerSection(
                   context: context,
                   items: [
                     _buildDrawerItem(
-                      icon: Icons.settings_outlined,
-                      title: 'الإعدادات',
-
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    _buildDrawerItem(
                       icon: Icons.help_outline,
                       title: 'المساعدة',
                       onTap: () {
-                        Navigator.pop(context);
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return CustomDialog(
+                              title: "المساعدة",
+                              message:
+                                  "  للمساعدة يمكنك التواصل مع فريق الدعم الخاص بالتطبيق على   717281413  ",
+                              icon: Icons.help_outline,
+                              iconColor: AppColors.kTextAndIconColor,
+                              buttonColor: AppColors.kTextAndIconColor,
+                              onClose: () => Navigator.pop(context),
+                            );
+                          },
+                        );
                       },
+                      themeProvider: themeProvider,
+                    ),
+                    _buildCustomDivider(themeProvider),
+                    _buildDrawerItem(
+                      icon: Icons.info_outline,
+                      title: 'حول التطبيق',
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return CustomDialog(
+                              title: "حول التطبيق",
+                              message:
+                                  "تطبيق حساب العمر هو تطبيق يمكنك من خلاله حساب عمرك وتحديد عمرك وكذلك تحديد عمر صديقك.",
+                              icon: Icons.info_outline,
+                              iconColor: AppColors.kTextAndIconColor,
+                              buttonColor: AppColors.kTextAndIconColor,
+                              onClose: () => Navigator.pop(context),
+                            );
+                          },
+                        );
+                      },
+                      themeProvider: themeProvider,
                     ),
                   ],
                 ),
-                Divider(color: themeProvider.isDarkMode ? kprimaryColor
-                    : kbuttonColor, height: 1),  // تحديد لون الـ Divider
+                _buildCustomDivider(themeProvider),
                 _buildDrawerSection(
                   context: context,
                   items: [
@@ -75,8 +103,23 @@ class MyDrawer extends StatelessWidget {
                       icon: Icons.logout,
                       title: 'تسجيل الخروج',
                       onTap: () {
-                        Navigator.pop(context);
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CustomLogoutDialog(
+                              context,
+                              onLogout: () {
+                                Navigator.pop(context);
+                                SystemNavigator.pop();
+                              },
+                              onCancel: () {
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        );
                       },
+                      themeProvider: themeProvider,
                     ),
                   ],
                 ),
@@ -88,31 +131,35 @@ class MyDrawer extends StatelessWidget {
     );
   }
 
-  // A helper function to build individual list items in the drawer
   Widget _buildDrawerItem({
     required IconData icon,
     required String title,
     required VoidCallback onTap,
+    required ThemeProvider themeProvider,
   }) {
     return ListTile(
-      leading: Icon(icon, color: kbuttonColor),
+      leading: Icon(
+        icon,
+        color: themeProvider.isDarkMode ? Colors.white : Colors.black,
+      ),
       title: Text(
         title,
         style: TextStyle(
-          color: kbuttonColor,  // تحديد اللون النصي
+          color: themeProvider.isDarkMode ? Colors.white : Colors.black,
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
       ),
       onTap: onTap,
       dense: true,
-      visualDensity: VisualDensity(horizontal: -4, vertical: -2),
+      visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
       contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-      tileColor: kprimaryColor.withOpacity(0.1), // تحديد اللون عند التحديد
+      tileColor: themeProvider.isDarkMode
+          ? Colors.grey[800]?.withOpacity(0.1)
+          : Colors.grey[200]?.withOpacity(0.1),
     );
   }
 
-  // A helper function to group drawer items into sections
   Widget _buildDrawerSection({
     required BuildContext context,
     required List<Widget> items,
@@ -122,12 +169,11 @@ class MyDrawer extends StatelessWidget {
     );
   }
 
-  // A helper function to build the header with profile image and info
   Widget _buildDrawerHeader(ThemeProvider themeProvider) {
     return DrawerHeader(
       decoration: BoxDecoration(
-        color: themeProvider.isDarkMode ? kbuttonColor : kprimaryColor,  // تحديد اللون الخلفي بناءً على الوضع
-        borderRadius: BorderRadius.vertical(
+        color: themeProvider.isDarkMode ? kbuttonColor : kprimaryColor,
+        borderRadius: const BorderRadius.vertical(
           bottom: Radius.circular(1),
         ),
       ),
@@ -135,28 +181,40 @@ class MyDrawer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Profile picture with the letter 'F' inside a circle
             SizedBox(
               width: double.infinity,
               height: 100,
               child: CircleAvatar(
-                foregroundColor: themeProvider.isDarkMode ? kprimaryColor : kbuttonColor,
+                foregroundColor:
+                    themeProvider.isDarkMode ? kprimaryColor : kbuttonColor,
                 radius: 50,
                 backgroundColor: kbuttonColor,
                 child: Text(
-                  'F',
+                  'عمرك',
                   style: TextStyle(
-                    color: themeProvider.isDarkMode ? kprimaryColor : kprimaryColor,  // تحديد اللون للنص بناءً على الوضع
-                    fontSize: 28, // Adjusted for a professional look
+                    color: themeProvider.isDarkMode
+                        ? kprimaryColor
+                        : kprimaryColor,
+                    fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCustomDivider(ThemeProvider themeProvider) {
+    return Divider(
+      color: themeProvider.isDarkMode ? kprimaryColor : kbuttonColor,
+      thickness: 0.8,
+      height: 15,
+      indent: 20,
+      endIndent: 20,
     );
   }
 }

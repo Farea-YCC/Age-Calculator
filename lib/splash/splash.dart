@@ -5,26 +5,22 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  SplashScreenState createState() => SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-
-    // إعداد الرسوم المتحركة
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
     )..forward();
 
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
-
-    // الانتقال إلى الشاشة الرئيسية بعد انتهاء شاشة البداية
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,

@@ -9,10 +9,10 @@ class AgeCalculatorView extends StatefulWidget {
   const AgeCalculatorView({Key? key}) : super(key: key);
 
   @override
-  _AgeCalculatorViewState createState() => _AgeCalculatorViewState();
+  AgeCalculatorViewState createState() => AgeCalculatorViewState();
 }
 
-class _AgeCalculatorViewState extends State<AgeCalculatorView> {
+class AgeCalculatorViewState extends State<AgeCalculatorView> {
   final _formKey = GlobalKey<FormState>();
   final _yearController = TextEditingController();
   final _monthController = TextEditingController();
